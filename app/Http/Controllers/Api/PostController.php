@@ -29,14 +29,17 @@ class PostController extends Controller
                 $this->getArrayNotNull($request)
             );
         }else{
+            Log::info('No mandatory data request: '.implode(", ", $request->all()).PHP_EOL.'IP: '.$request->ip());
             return response()->json(['success' => 'false', 'massage' => 'no mandatory data'], 200);
         }
+        Log::info('Created contact: '.implode(", ", $request->all()).PHP_EOL.'IP: '.$request->ip());
         return response()->json(['success' => 'true', 'data' => $contact], 200);
     }
 
     public function delete(Contact $contact)
     {
         $contact->delete();
+        Log::info("Removed contact complete");
         return redirect()->back()->with("status", "Removed contact");
     }
 
