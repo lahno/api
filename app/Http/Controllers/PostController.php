@@ -34,7 +34,7 @@ class PostController extends Controller
         $user = Auth::user();
         $user->password = bcrypt($request->get('new-password'));
         $user->save();
-        return redirect()->back()->with("success","Password changed successfully!");
+        return redirect('/')->with("success","Password changed successfully!");
     }
 
     public function deletingAccountForm(){
