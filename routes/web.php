@@ -26,3 +26,5 @@ Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');
 /* Posts request */
 Route::post('/changePassword','PostController@changePassword')->name('changePassword');
 Route::post('/deletingAccount','PostController@deletingAccount')->name('deletingAccount');
+
+Route::get('l_v_', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');

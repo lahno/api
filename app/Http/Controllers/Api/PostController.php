@@ -6,6 +6,7 @@ use App\Model\Contact;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use msonowal\LaravelTinify\Facades\Tinify;
 
 class PostController extends Controller

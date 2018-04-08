@@ -7,11 +7,12 @@
     "require": {
         "php": ">=7.0.0",
         "fideloper/proxy": "~3.3",
+        "greggilbert/recaptcha": "dev-master",
         "laravel/framework": "5.5.4",
         "laravel/passport": "~4.0",
         "laravel/tinker": "~1.0",
         "msonowal/laravel-tinify": "~1.0",
-        "greggilbert/recaptcha": "dev-master"
+        "rap2hpoutre/laravel-log-viewer": "^0.14.3"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
