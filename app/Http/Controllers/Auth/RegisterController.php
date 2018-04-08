@@ -77,7 +77,7 @@ class RegisterController extends Controller
             'user_id' => $user->id,
             'token' => str_random(40)
         ]);
-        Mail::to($user->email)->send(new VerifyMail($user));
+        Mail::from('support@web-icon.com.ua', 'Activation Email')->to($user->email)->send(new VerifyMail($user));
         return $user;
     }
 
