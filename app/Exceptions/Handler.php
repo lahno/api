@@ -51,7 +51,7 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof QueryException) {
-            return response()->json(['success' => 'false', 'massage' => 'Ошибка записи в БД'], 500);
+            return response()->json(['success' => 'false', 'massage' => 'Error writing to database'], 500);
         }if ($exception instanceof NotFoundHttpException) {
             return response()->json(['success' => 'false', 'massage' => 'Not Found'], 404);
         }
