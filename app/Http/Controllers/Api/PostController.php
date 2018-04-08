@@ -23,7 +23,7 @@ class PostController extends Controller
                 $this->getArrayNotNull($request)
             );
         }else{
-            return response()->json(['success' => 'false', 'massage' => 'нет обязательных данных!'], 200);
+            return response()->json(['success' => 'false', 'massage' => 'no mandatory data'], 200);
         }
         return response()->json(['success' => 'true', 'data' => $contact], 200);
     }
