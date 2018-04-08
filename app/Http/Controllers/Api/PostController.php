@@ -10,6 +10,11 @@ use msonowal\LaravelTinify\Facades\Tinify;
 
 class PostController extends Controller
 {
+    public function __construct(Request $request)
+    {
+        Log::info('Post request: '.implode(", ", $request->all()).PHP_EOL.'IP: '.$request->ip());
+    }
+
     public function contacts(Request $request)
     {
         if ($request->phone){
