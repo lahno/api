@@ -37,7 +37,7 @@ class PostController extends Controller
     public function delete(Contact $contact)
     {
         $contact->delete();
-        return response()->json(['success' => 'true', 'massage' => 'removed'], 200);
+        return redirect()->back()->with("status", "Removed contact");
     }
 
 

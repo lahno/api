@@ -9,7 +9,7 @@
 
                 <div class="panel-body">
                     @if (session('status'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-info">
                             {{ session('status') }}
                         </div>
                     @endif
@@ -20,7 +20,7 @@
                             <passport-personal-access-tokens></passport-personal-access-tokens>
                         </div>
                     @else
-                        <div class="alert alert-success">
+                        <div class="alert alert-info">
                             <p>У Вас нет нужного доступа, свяжитесь с администратором</p>
                         </div>
                     @endif
@@ -152,6 +152,27 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger btn-sm showModalFormDeletingContact" data-toggle="modal" data-target="modalDeleteContact_{{$contact->id}}">Delete contact</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal fade" id="modalDeleteContact_{{$contact->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 300px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Delete contact {{$contact->id}}</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <form id="delete_contact_{{$contact->id}}" action="{{route('deletingContact', ['contact' => $contact->id])}}" method="get">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-danger">Yes</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                        </form>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
