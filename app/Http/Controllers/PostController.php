@@ -34,7 +34,22 @@ class PostController extends Controller
         $user = Auth::user();
         $user->password = bcrypt($request->get('new-password'));
         $user->save();
-        return redirect()->back()->with("success","Password changed successfully !");
+        return redirect()->back()->with("success","Password changed successfully!");
+    }
+
+    public function deletingAccountForm(){
+        return view('auth.deletingaccount');
+    }
+
+    public function deletingAccount(Request $request){
+        if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
+            // The passwords matches
+            return redirect()->back()->with("error","Your current password does not matches with the password you provided. Please try again.");
+        }
+        // Deleting Account
+        $user = Auth::user();
+        $user->delete();
+        return redirect('/login')->with("status","Account deleting successfully!");
     }
 
 }

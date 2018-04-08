@@ -10,4 +10,9 @@ class User extends Authenticatable
 {
     protected $fillable = ['name', 'email', 'password'];
     use HasApiTokens, Notifiable;
+
+    public function verifyUser()
+    {
+        return $this->hasOne('App\VerifyUser');
+    }
 }

@@ -169,6 +169,7 @@ return [
          */
         msonowal\LaravelTinify\LaravelTinifyServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -228,7 +229,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Tinify' => msonowal\LaravelTinify\Facades\Tinify::class
+        'Tinify' => msonowal\LaravelTinify\Facades\Tinify::class,
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
 
     ],
 
