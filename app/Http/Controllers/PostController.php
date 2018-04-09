@@ -52,4 +52,8 @@ class PostController extends Controller
         return redirect('/login')->with("status","Account deleting successfully!");
     }
 
+    public function oAuthClients(){
+        return view('auth.o_auth_clients');
+    }
+
 }

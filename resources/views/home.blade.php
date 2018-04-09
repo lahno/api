@@ -1,41 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
-
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-info">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    @if(Auth::user()->access_api)
-                        <div id="app">
-                            <passport-clients></passport-clients>
-                            <passport-authorized-clients></passport-authorized-clients>
-                            <passport-personal-access-tokens></passport-personal-access-tokens>
-                        </div>
-                    @else
-                        <div class="alert alert-info">
-                            <p>У Вас нет нужного доступа, свяжитесь с администратором</p>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <div class="container">
         @if(Auth::user()->access_admin)
             <div class="row">
                 <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Contacts</div>
                         <div class="panel-body">
-                            <table class="table table-hover table-responsive">
+                            @if (session('status'))
+                                <div class="alert alert-info">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
+                            <div class="table-responsive">
+                                <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -64,9 +43,14 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        @else
+            <div class="alert alert-info">
+                <p>У Вас нет нужного доступа, свяжитесь с администратором</p>
             </div>
         @endif
     </div>
@@ -168,7 +152,7 @@
                         <h4 class="modal-title">Delete contact {{$contact->id}}</h4>
                     </div>
                     <div class="modal-body text-center">
-                        <form id="delete_contact_{{$contact->id}}" action="{{route('deletingContact', ['contact' => $contact->id])}}" method="get">
+                        <form id="delete_contact_{{$contact->id}}" action="{{route('deletingContact', ['contact' => $contact->id])}}" method="post">
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-danger">Yes</button>
                             <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
@@ -179,5 +163,4 @@
         </div><!-- /.modal -->
     @endforeach
 
-</div>
 @endsection

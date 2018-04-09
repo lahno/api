@@ -46,13 +46,20 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
+                            <li class="{{(Route::currentRouteName() == 'home')?'active':''}}"><a href="{{ route('home') }}">Dashboard</a></li>
+                            <li class="{{(Route::currentRouteName() == 'contacts')?'active':''}}"><a href="{{ route('contacts') }}">Contacts</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} - {{ Auth::user()->email }} <span class="caret"></span>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li>
+                                    <li class="{{(Route::currentRouteName() == 'oAuthClients')?'active':''}}">
+                                        <a href="{{route('oAuthClients')}}">
+                                            Passport settings
+                                        </a>
+                                    </li>
+                                    <li class="{{(Route::currentRouteName() == 'changePasswordForm')?'active':''}}">
                                         <a href="{{route('changePasswordForm')}}">
                                             Change Password
                                         </a>

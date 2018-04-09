@@ -1,5 +1,16 @@
 body
-  background: url(../img/bg_body.jpg) center no-repeat
+  background: url(../img/bg_body.jpg) center top no-repeat
+  &:after
+    content: ''
+    display: block
+    width: 100%
+    height: 100%
+    background: #333
+    position: absolute
+    top: 0
+    left: 0
+    opacity: 0.5
+    z-index: -1
   .logo_block
     margin-top: 25px
     margin-bottom: 50px
@@ -9,3 +20,7 @@ body
     height: 100%
   .navbar-default
     opacity: 0.9
+    transition: opacity 5s cubic-bezier(.6,-0.44,.37,1.44)
+    &:hover
+      opacity: 1
+      transition: opacity 0.2s cubic-bezier(.6,-0.44,.37,1.44)
