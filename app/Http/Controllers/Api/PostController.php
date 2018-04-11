@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\onAddContactEvent;
 use App\Model\Contact;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ class PostController extends Controller
             Log::info('No mandatory data request: '.implode(", ", $request->all()).PHP_EOL.'IP: '.$request->ip());
             return response()->json(['success' => 'false', 'massage' => 'no mandatory data'], 200);
         }
+        event(new onAddContactEvent($contact));
         Log::info('Created contact: '.implode(", ", $request->all()).PHP_EOL.'IP: '.$request->ip());
         return response()->json(['success' => 'true', 'data' => $contact], 200);
     }
@@ -41,6 +43,10 @@ class PostController extends Controller
         $contact->delete();
         Log::info("Removed contact complete");
         return redirect()->back()->with("status", "Removed contact");
+    }
+
+    public function get_contacts(){
+        return Contact::all();
     }
 
 

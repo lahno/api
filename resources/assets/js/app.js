@@ -30,6 +30,11 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
+Vue.component(
+    'contacts-list',
+    require('./components/contact/ContactsList.vue')
+);
+
 const app = new Vue({
     el: '#app'
 });

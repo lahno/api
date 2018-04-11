@@ -13,7 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => 'v1.0'], function () {
-    Route::middleware('auth:api')->post('contacts', 'Api\PostController@contacts');
+Route::group(['prefix' => 'v1.0', 'middleware' => 'auth:api'], function () {
+    Route::post('contacts', 'Api\PostController@contacts');
 
 });
+
+/* Request for admin panel */
+Route::get('get_contacts', 'Api\PostController@get_contacts');
+Route::get('contacts/delete/{contact}', 'Api\PostController@delete')->name('deletingContact');

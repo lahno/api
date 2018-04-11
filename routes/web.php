@@ -32,7 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
 /* Posts request */
 Route::post('changePassword','PostController@changePassword')->name('changePassword');
 Route::post('deletingAccount','PostController@deletingAccount')->name('deletingAccount');
-Route::post('contacts/delete/{contact}', 'Api\PostController@delete')->name('deletingContact');
 
 /* Log view */
 Route::get('l_v_', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
