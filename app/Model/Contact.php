@@ -18,6 +18,8 @@ class Contact extends Model
         "device",
         "birthday",
         "address",
+        "soc",
+        "soc_id",
         "photo",
         "contact_site"
     ];
