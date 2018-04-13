@@ -41,6 +41,11 @@ class PostController extends Controller
     public function delete(Contact $contact)
     {
         $contact->delete();
+        // если в модель есть файл и есть этот файл на диске
+        if (!empty($contact->photo) && file_exists(public_path('file_download/photo_users/'.$contact->photo))){
+            // удаляем этот файл
+            unlink(public_path('file_download/photo_users/'.$contact->photo));
+        }
         Log::info("Removed contact complete");
         return redirect()->back()->with("status", "Removed contact");
     }

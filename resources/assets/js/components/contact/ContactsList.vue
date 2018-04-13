@@ -41,7 +41,7 @@
             <div class="panel-heading">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span>
-                        Contacts
+                        Contacts <span class="label label-success" v-if="contacts.length > 0">{{contacts.length}}</span>
                     </span>
                 </div>
             </div>
@@ -102,6 +102,9 @@
                                     <td><strong>{{ key }}</strong></td>
                                     <td v-if=" key === 'photo' &&  value !== null">
                                         <img :src="'file_download/photo_users/' + value" class="img-responsive img-thumbnail">
+                                    </td>
+                                    <td v-else-if=" key === 'photo_soc' &&  value !== null">
+                                        <img :src="value" class="img-responsive img-thumbnail">
                                     </td>
                                     <td v-else>{{ value }}</td>
                                 </tr>
