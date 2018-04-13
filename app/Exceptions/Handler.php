@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -54,6 +55,8 @@ class Handler extends ExceptionHandler
             return response()->json(['success' => 'false', 'massage' => 'Error writing to database'], 500);
         }if ($exception instanceof NotFoundHttpException) {
             return response()->json(['success' => 'false', 'massage' => 'Not Found'], 404);
+        }if ($exception instanceof MethodNotAllowedHttpException) {
+        return response()->json(['success' => 'false', 'massage' => 'Method not found'], 404);
         }
         return parent::render($request, $exception);
     }
