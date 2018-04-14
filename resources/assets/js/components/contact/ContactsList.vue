@@ -100,7 +100,7 @@
                                 <tbody>
                                 <tr v-for="(value, key) in editForm.contact_form">
                                     <td><strong>{{ key }}</strong></td>
-                                    <td v-if=" key === 'photo' || key === 'photo_soc' &&  value !== null">
+                                    <td v-if=" key === 'photo' &&  value !== null || key === 'photo_soc' &&  value !== null">
                                         <img :src="'file_download/photo_users/' + value" class="img-responsive img-thumbnail">
                                     </td>
                                     <td v-else>{{ value }}</td>
