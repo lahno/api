@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Events\onAddContactEvent;
 use App\Model\Contact;
 use Carbon\Carbon;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use msonowal\LaravelTinify\Facades\Tinify;
 
 class PostController extends Controller
@@ -93,7 +95,10 @@ class PostController extends Controller
                     unlink(public_path('file_download/photo_users/'.$contact_db->photo_soc));
                 }
                 $file_name = uniqid(Carbon::now()->format('YmdGi')).'.jpg';
-                $request->file($item)->move(public_path('file_download/photo_users'), $file_name);
+                $path = public_path('file_download/photo_users/'.$file_name);
+                // сжимаем и сохраняем файл
+                $source = Tinify::fromUrl($item);
+                $source->toFile($path);
                 $data[$key] = $file_name;
                 continue;
             }

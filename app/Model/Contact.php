@@ -21,6 +21,7 @@ class Contact extends Model
         "soc",
         "soc_id",
         "photo",
+        "photo_soc",
         "contact_site"
     ];
 }
