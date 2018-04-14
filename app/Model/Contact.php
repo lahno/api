@@ -20,6 +20,7 @@ class Contact extends Model
         "address",
         "soc",
         "soc_id",
+        "soc_url",
         "photo",
         "photo_soc",
         "contact_site"

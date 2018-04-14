@@ -92,6 +92,8 @@ class PostController extends Controller
     public function getArrayNotNull($request)
     {
         $data = [];
+        $data_soc_url = [];
+
         // получаем модель из БД
         if ($request->phone){
             $contact_db = Contact::where('phone', $request->phone)->first();
@@ -100,6 +102,8 @@ class PostController extends Controller
         }else{
             return false;
         }
+
+        // Проходим цикл и записываем в массив только не пустые значения
         foreach ($request->all() as $key => $item){
             if ($item == null) continue; // если нет значения - пропускаем
             if ($key == 'photo'){
@@ -135,8 +139,27 @@ class PostController extends Controller
                 $data[$key] = $phone;
                 continue;
             }
+            if($key == 'soc'){
+                if ($item == 'facebook'){
+                    $url = 'https://www.facebook.com/';
+                }elseif ($item == 'vk'){
+                    $url = 'https://vk.com/';
+                }else{
+                    $url = null;
+                }
+                $data_soc_url[0] = $url;
+                continue;
+            }
+            if($key == 'soc_id'){
+                $data_soc_url[1] = $item;
+                continue;
+            }
             $data[$key] = $item;
         }
+
+        ksort($data_soc_url); // сортируем по ключу
+        $data['soc_url'] = implode($data_soc_url); // добавляем скленное значение в массив
+
         return $data;
     }
 

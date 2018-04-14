@@ -1,5 +1,6 @@
 <template>
-    <table class="table table-borderless m-b-none">
+    <div class="table-responsive">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th v-for="column in columns" :key="column.name" @click="$emit('sort', column.name)"
@@ -12,6 +13,7 @@
         </thead>
         <slot></slot>
     </table>
+    </div>
 </template>
 
 <script>

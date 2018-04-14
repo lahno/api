@@ -7,9 +7,6 @@
     .table_tr td{
         position: relative;
     }
-    .table_tr.table_tr_new{
-        background: #3097d140;
-    }
     .slide-fade-enter-active {
         transition: all .3s ease;
     }
@@ -44,7 +41,7 @@
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
             <tbody>
-                <tr v-for="contact in contacts" :key="contact.id" class="table_tr" v-bind:class="{ table_tr_new: contact.new}">
+                <tr v-for="contact in contacts" :key="contact.id" class="table_tr" v-bind:class="{ success: contact.new}">
                     <td>{{contact.id}}</td>
                     <td>{{contact.firstname}}</td>
                     <td>{{contact.phone}}</td>
@@ -78,6 +75,11 @@
                                 <td><strong>{{ key }}</strong></td>
                                 <td v-if=" key === 'photo' &&  value !== null || key === 'photo_soc' &&  value !== null">
                                     <img :src="'file_download/photo_users/' + value" class="img-responsive img-thumbnail">
+                                </td>
+                                <td v-else-if=" key === 'soc_url' &&  value !== null">
+                                    <a :href="value" target="_blank">
+                                        {{ value }}
+                                    </a>
                                 </td>
                                 <td v-else>{{ value }}</td>
                             </tr>
