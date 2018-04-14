@@ -86,6 +86,17 @@ class PostController extends Controller
                 $data[$key] = $file_name;
                 continue;
             }
+            if ($key == 'photo_soc'){
+                // если есть модель с файлом и есть этот файл на диске
+                if (!empty($contact_db->photo_soc) && file_exists(public_path('file_download/photo_users/'.$contact_db->photo_soc))){
+                    // удаляем этот файл
+                    unlink(public_path('file_download/photo_users/'.$contact_db->photo_soc));
+                }
+                $file_name = uniqid(Carbon::now()->format('YmdGi')).'.jpg';
+                $request->file($item)->move(public_path('file_download/photo_users'), $file_name);
+                $data[$key] = $file_name;
+                continue;
+            }
             if($key == 'phone'){
                 $phone = str_replace(['+','(',')','-', ' '], "", $item);
                 $data[$key] = $phone;
