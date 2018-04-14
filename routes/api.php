@@ -20,4 +20,4 @@ Route::group(['prefix' => 'v1.0', 'middleware' => 'auth:api'], function () {
 
 /* Request for admin panel */
 Route::get('get_contacts', 'Api\PostController@get_contacts');
-Route::get('contacts/delete/{contact}', 'Api\PostController@delete')->name('deletingContact');
+Route::get('contacts/delete/{contactId}', 'Api\PostController@delete');

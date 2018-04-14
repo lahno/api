@@ -181,12 +181,12 @@
             },
 
             /**
-             * Edit the given contact.
+             * Edit the given Contact.
              */
             edit(contact) {
                 this.editForm.contact_form = contact;
 
-                $('#modal-edit-contact').modal('show');
+                $('#modal-edit-Contact').modal('show');
             },
 
             /**
@@ -197,7 +197,7 @@
                     .then(response => {
                         this.getContacts();
                     });
-                $('#modal-edit-contact').modal('hide');
+                $('#modal-edit-Contact').modal('hide');
                 this.message = 'Deleted ID: '+contact.id;
             }
 

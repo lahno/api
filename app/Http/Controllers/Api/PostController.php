@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Events\onAddContactEvent;
 use App\Model\Contact;
 use Carbon\Carbon;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use msonowal\LaravelTinify\Facades\Tinify;
 
 class PostController extends Controller
@@ -36,24 +34,54 @@ class PostController extends Controller
             return response()->json(['success' => 'false', 'massage' => 'no mandatory data'], 200);
         }
         event(new onAddContactEvent($contact));
-        Log::info('Created contact: '.implode(", ", $request->all()).PHP_EOL.'IP: '.$request->ip());
+        Log::info('Created Contact: '.implode(", ", $request->all()).PHP_EOL.'IP: '.$request->ip());
         return response()->json(['success' => 'true', 'data' => $contact], 200);
     }
 
-    public function delete(Contact $contact)
+    public function delete($contactId)
     {
-        $contact->delete();
-        // если в модель есть файл и есть этот файл на диске
-        if (!empty($contact->photo) && file_exists(public_path('file_download/photo_users/'.$contact->photo))){
-            // удаляем этот файл
-            unlink(public_path('file_download/photo_users/'.$contact->photo));
+        $contact = Contact::where('id', $contactId)->first();
+        if (isset($contact)){
+            // если в модель есть файл и есть этот файл на диске
+            if (!empty($contact->photo) && file_exists(public_path('file_download/photo_users/'.$contact->photo))){
+                // удаляем этот файл
+                unlink(public_path('file_download/photo_users/'.$contact->photo));
+            }
+            if (!empty($contact->photo_soc) && file_exists(public_path('file_download/photo_users/'.$contact->photo_soc))){
+                // удаляем этот файл
+                unlink(public_path('file_download/photo_users/'.$contact->photo_soc));
+            }
+            $contact->delete();
+            Log::info("Removed Contact ID: ".$contactId." complete");
+            return ["status" => true, "massage" => "Removed contact model"];
+        }else{
+            return ["status" => false, "massage" => "No find contact model"];
         }
-        Log::info("Removed contact complete");
-        return redirect()->back()->with("status", "Removed contact");
+
     }
 
-    public function get_contacts(){
-        return Contact::all();
+    public function get_contacts(Request $request){
+
+        $columns = ['id', 'firstname', 'phone', 'email'];
+
+        $length = $request->input('length');
+        $column = $request->input('column'); //Index
+        $dir = $request->input('dir');
+        $searchValue = $request->input('search');
+
+        $query = Contact::select('*')->orderBy($columns[$column], $dir);
+
+        if ($searchValue) {
+            $query->where(function($query) use ($searchValue) {
+                $query->where('firstname', 'like', '%' . $searchValue . '%')
+                    ->orWhere('phone', 'like', '%' . $searchValue . '%')
+                    ->orWhere('email', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $Users = $query->paginate($length);
+
+        return ['data' => $Users, 'draw' => $request->input('draw')];
     }
 
 

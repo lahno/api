@@ -94,12 +94,5 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-
-    <script>
-        $('.showModalFormDeletingContact').on('click', function(){
-           var modal_show = $(this).attr('data-target');
-           $('#'+modal_show).modal('show').find('.modal-dialog').css('top', '25%');
-        });
-    </script>
 </body>
 </html>

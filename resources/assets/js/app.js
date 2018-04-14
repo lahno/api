@@ -32,7 +32,7 @@ Vue.component(
 
 Vue.component(
     'contacts-list',
-    require('./components/contact/ContactsList.vue')
+    require('./components/Contact/Contacts.vue')
 );
 
 const app = new Vue({
