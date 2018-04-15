@@ -46,6 +46,7 @@
                     <td>{{contact.firstname}}</td>
                     <td>{{contact.phone}}</td>
                     <td>{{contact.email}}<span class="label label-primary label-new" v-if="contact.new">New</span></td>
+                    <td>{{contact.city}}</td>
                     <td>
                         <button type="button" class="btn btn-link btn-xs" @click="edit(contact)"><span class="glyphicon glyphicon-search"></span></button>
                     </td>
@@ -113,18 +114,20 @@ export default {
                 this.contacts.unshift(e.contact);
             });
     },
+
     data() {
         let sortOrders = {};
 
         let columns = [
-            {width: '5%', label: 'ID', name: 'id' },
+            {width: '', label: 'ID', name: 'id' },
             {width: '', label: 'Firstname', name: 'firstname' },
             {width: '', label: 'Phone', name: 'phone'},
-            {width: '', label: 'Email', name: 'email'}
+            {width: '', label: 'Email', name: 'email'},
+            {width: '', label: 'City', name: 'city'}
         ];
 
         columns.forEach((column) => {
-           sortOrders[column.id] = -1;
+           sortOrders[column.name] = -1;
         });
         return {
             contacts: [],
@@ -185,12 +188,12 @@ export default {
         sortBy(key) {
             this.sortKey = key;
             this.sortOrders[key] = this.sortOrders[key] * -1;
-            this.tableData.column = this.getIndex(this.columns, 'name', key);
+            this.tableData.column = this.getIndex(this.columns, 'id', key);
             this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
             this.getContacts();
         },
         getIndex(array, key, value) {
-            return array.findIndex(i => i[key] == value)
+            return array.findIndex(i => i[key] === value)
         },
 
         /**

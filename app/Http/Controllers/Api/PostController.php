@@ -4,19 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\onAddContactEvent;
 use App\Model\Contact;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image;
-use msonowal\LaravelTinify\Facades\Tinify;
 
-class PostController extends Controller
+class PostController extends ApiController
 {
     public function __construct(Request $request)
     {
         Log::info('Post request: '.implode(", ", $request->all()).PHP_EOL.'IP: '.$request->ip());
     }
+
 
     public function contacts(Request $request)
     {
@@ -63,7 +60,7 @@ class PostController extends Controller
 
     public function get_contacts(Request $request){
 
-        $columns = ['id', 'firstname', 'phone', 'email'];
+        $columns = ['id', 'firstname', 'phone', 'email', 'city'];
 
         $length = $request->input('length');
         $column = $request->input('column'); //Index
@@ -75,98 +72,20 @@ class PostController extends Controller
         if ($searchValue) {
             $query->where(function($query) use ($searchValue) {
                 $query->where('firstname', 'like', '%' . $searchValue . '%')
+                    ->orWhere('firstname', 'like', '%' . $this->getStringLat($searchValue) . '%')
                     ->orWhere('phone', 'like', '%' . $searchValue . '%')
                     ->orWhere('email', 'like', '%' . $searchValue . '%');
             });
         }
 
-        $Users = $query->paginate($length);
+        $Contacts = $query->paginate($length);
 
-        return ['data' => $Users, 'draw' => $request->input('draw')];
+        return ['data' => $Contacts, 'draw' => $request->input('draw')];
     }
 
 
     /*--------------------------
      *  Вспомогательные методы
      * -------------------------*/
-
-    public function getArrayNotNull($request)
-    {
-        $data = [];
-        $data_soc_url = [];
-
-        // получаем модель из БД
-        if ($request->phone){
-            $phone = str_replace(['+','(',')','-', ' '], "", $request->phone);
-            $contact_db = Contact::where('phone', $phone)->first();
-        }elseif ($request->email){
-            $contact_db = Contact::where('email', $request->email)->first();
-        }else{
-            return false;
-        }
-
-        // Проходим цикл и записываем в массив только не пустые значения
-        foreach ($request->all() as $key => $item){
-            if ($item == null) continue; // если нет значения - пропускаем
-            if ($key == 'photo'){
-                // если есть модель с файлом и есть этот файл на диске
-                if (!empty($contact_db->photo) && file_exists(public_path('file_download/photo_users/'.$contact_db->photo))){
-                    // удаляем этот файл
-                    unlink(public_path('file_download/photo_users/'.$contact_db->photo));
-                }
-
-                $file_name = uniqid(Carbon::now()->format('YmdGi')).'.jpg';
-                $path = public_path('file_download/photo_users/'.$file_name);
-
-                // сжимаем и сохраняем файл
-                $source = Tinify::fromUrl($item);
-                $source->toFile($path);
-
-                $data[$key] = $file_name;
-                continue;
-            }
-            if ($key == 'photo_soc'){
-                // если есть модель с файлом и есть этот файл на диске
-                if (!empty($contact_db->photo_soc) && file_exists(public_path('file_download/photo_users/'.$contact_db->photo_soc))){
-                    // удаляем этот файл
-                    unlink(public_path('file_download/photo_users/'.$contact_db->photo_soc));
-                }
-                $file_name = uniqid(Carbon::now()->format('YmdGi')).'.jpg';
-                $path = public_path('file_download/photo_users/'.$file_name);
-                // сжимаем и сохраняем файл
-                $img = Image::make($item)->resize(100, 100);
-                $img->save($path, 100); // качество 100/100, по умолчанию 90
-                $data[$key] = $file_name;
-                continue;
-            }
-            if($key == 'phone'){
-                $data[$key] = $phone;
-                continue;
-            }
-            if($key == 'soc'){
-                if ($item == 'facebook'){
-                    $url = 'https://www.facebook.com/';
-                }elseif ($item == 'vk'){
-                    $url = 'https://vk.com/';
-                }else{
-                    $url = null;
-                }
-                $data[$key] = $item;
-                $data_soc_url[0] = $url;
-                continue;
-            }
-            if($key == 'soc_id'){
-                $data[$key] = $item;
-                $data_soc_url[1] = $item;
-                continue;
-            }
-            $data[$key] = $item;
-        }
-
-        ksort($data_soc_url); // сортируем по ключу
-        $data['soc_url'] = implode($data_soc_url); // добавляем скленное значение в массив
-
-        return $data;
-    }
 
 }

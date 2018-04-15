@@ -22,9 +22,6 @@ Route::get('user/verify/{token}', 'Auth\RegisterController@verifyUser');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('changePasswordForm','PostController@showChangePasswordForm')->name('changePasswordForm');
     Route::get('deletingAccountForm','PostController@deletingAccountForm')->name('deletingAccountForm');
-
-//    Route::get('deletingContact','PostController@deletingContact')->name('deletingContact');
-
     Route::get('oAuthClients','PostController@oAuthClients')->name('oAuthClients');
     Route::get('contacts','ContactsController@contacts')->name('contacts');
 
