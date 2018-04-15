@@ -147,10 +147,12 @@ class PostController extends Controller
                 }else{
                     $url = null;
                 }
+                $data[$key] = $item;
                 $data_soc_url[0] = $url;
                 continue;
             }
             if($key == 'soc_id'){
+                $data[$key] = $item;
                 $data_soc_url[1] = $item;
                 continue;
             }
