@@ -171,6 +171,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -232,6 +233,7 @@ return [
 
         'Tinify' => msonowal\LaravelTinify\Facades\Tinify::class,
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

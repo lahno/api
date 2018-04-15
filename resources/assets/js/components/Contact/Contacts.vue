@@ -68,8 +68,8 @@
                         </h4>
                     </div>
 
-                    <div class="modal-body">
-                        <table class="table table-bordered table-hover table-condensed table-responsive">
+                    <div class="modal-body table-responsive">
+                        <table class="table table-bordered table-hover table-condensed">
                             <tbody>
                             <tr v-for="(value, key) in editForm.contact_form">
                                 <td><strong>{{ key }}</strong></td>
@@ -96,6 +96,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 

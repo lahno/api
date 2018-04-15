@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
+use Intervention\Image\Facades\Image;
 use msonowal\LaravelTinify\Facades\Tinify;
 
 class PostController extends Controller
@@ -21,7 +22,7 @@ class PostController extends Controller
     {
         if ($request->phone){
             $contact = Contact::updateOrCreate(
-                ['phone' => $request->phone],
+                ['phone' => str_replace(['+','(',')','-', ' '], "", $request->phone)],
                 $this->getArrayNotNull($request)
             );
         }elseif ($request->email){
@@ -96,7 +97,8 @@ class PostController extends Controller
 
         // получаем модель из БД
         if ($request->phone){
-            $contact_db = Contact::where('phone', $request->phone)->first();
+            $phone = str_replace(['+','(',')','-', ' '], "", $request->phone);
+            $contact_db = Contact::where('phone', $phone)->first();
         }elseif ($request->email){
             $contact_db = Contact::where('email', $request->email)->first();
         }else{
@@ -112,11 +114,14 @@ class PostController extends Controller
                     // удаляем этот файл
                     unlink(public_path('file_download/photo_users/'.$contact_db->photo));
                 }
+
                 $file_name = uniqid(Carbon::now()->format('YmdGi')).'.jpg';
                 $path = public_path('file_download/photo_users/'.$file_name);
+
                 // сжимаем и сохраняем файл
                 $source = Tinify::fromUrl($item);
                 $source->toFile($path);
+
                 $data[$key] = $file_name;
                 continue;
             }
@@ -129,13 +134,12 @@ class PostController extends Controller
                 $file_name = uniqid(Carbon::now()->format('YmdGi')).'.jpg';
                 $path = public_path('file_download/photo_users/'.$file_name);
                 // сжимаем и сохраняем файл
-                $source = Tinify::fromUrl($item);
-                $source->toFile($path);
+                $img = Image::make($item)->resize(100, 100);
+                $img->save($path, 60);
                 $data[$key] = $file_name;
                 continue;
             }
             if($key == 'phone'){
-                $phone = str_replace(['+','(',')','-', ' '], "", $item);
                 $data[$key] = $phone;
                 continue;
             }
