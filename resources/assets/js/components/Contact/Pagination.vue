@@ -19,7 +19,6 @@
         &[disabled]
             background: rgba(51, 51, 51, 0.43)
             cursor: default
-
 </style>
 
 <template>

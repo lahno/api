@@ -74,7 +74,8 @@ class PostController extends ApiController
                 $query->where('firstname', 'like', '%' . $searchValue . '%')
                     ->orWhere('firstname', 'like', '%' . $this->getStringLat($searchValue) . '%')
                     ->orWhere('phone', 'like', '%' . $searchValue . '%')
-                    ->orWhere('email', 'like', '%' . $searchValue . '%');
+                    ->orWhere('email', 'like', '%' . $searchValue . '%')
+                    ->orWhere('city', 'like', '%' . $searchValue . '%');
             });
         }
 

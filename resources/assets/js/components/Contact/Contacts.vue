@@ -1,46 +1,76 @@
-<style scoped>
-    .label-new{
-        position: absolute;
-        right: 10px;
-        top: 10px;
-    }
-    .table_tr td{
-        position: relative;
-    }
-    .slide-fade-enter-active {
-        transition: all .3s ease;
-    }
-    .slide-fade-leave-active {
-        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
+<style lang="sass">
+    .label-new
+        position: absolute
+        right: 10px
+        top: 10px
+    .table_tr td
+        position: relative
+    .slide-fade-enter-active
+        transition: all .3s ease
+    .slide-fade-leave-active
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0)
     .slide-fade-enter, .slide-fade-leave-to
-        /* .slide-fade-leave-active до версии 2.1.8 */ {
-        transform: translateX(10px);
-        opacity: 0;
-    }
+        transform: translateX(10px)
+        opacity: 0
+    .contacts_list
+        .tableFilters
+            margin-bottom: 10px
+            input
+                width: 55%
+                padding: 3px
+            .control
+                float: right
+            select
+                height: 35px
+                &:hover
+                    cursor: pointer
+        .sort
+            background-repeat: no-repeat
+            background-position: center right
+            &.sorting
+                background-image: url('../../../img/sort_both.png')
+            &.sorting_asc
+                background-image: url('../../../img/sort_asc.png')
+            &.sorting_desc
+                background-image: url('../../../img/sort_desc.png')
+    .tableOptions
+        margin: 20px 0
+        .option
+            text-align: center
+            display: inline-block
+            label
+                text-align: center
+                span
+                    font-size: 12px
+                    font-weight: normal
+                div
+                    margin: 0 auto
 </style>
 <template>
-    <div class="contacts_list">
-        <div class="alert alert-info" v-if="message">
-            {{ message }}
-        </div>
-        <div class="tableFilters">
-            <input class="input" type="text" v-model="tableData.search" placeholder="Search Contacts"
-                   @input="getContacts()">
+    <div class="contacts_list panel panel-default">
+        <div class="panel-heading">Contacts</div>
 
-            <div class="control">
-                <div class="select">
-                    <select v-model="tableData.length" @change="getContacts()">
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">50</option>
-                        <option value="30">100</option>
-                    </select>
+        <div class="panel-body">
+            <div class="alert alert-info" v-if="message">
+                {{ message }}
+            </div>
+            <div class="tableFilters">
+                <input class="input" type="text" v-model="tableData.search" placeholder="Search Contacts" @input="getContacts()">
+                <div class="control">
+                    <div class="select">
+                        <select v-model="tableData.length" @change="getContacts()">
+                            <option v-for="view in views" :value="view">{{view}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
-            <tbody>
+            <div class="tableOptions">
+                <div class="option">
+                    <switches v-model="online" theme="bulma" color="green" textDisabled="Update offline" textEnabled="Update online"/>
+                </div>
+            </div>
+            <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
+                <tbody>
                 <tr v-for="contact in contacts" :key="contact.id" class="table_tr" v-bind:class="{ success: contact.new}">
                     <td>{{contact.id}}</td>
                     <td>{{contact.firstname}}</td>
@@ -51,80 +81,83 @@
                         <button type="button" class="btn btn-link btn-xs" @click="edit(contact)"><span class="glyphicon glyphicon-search"></span></button>
                     </td>
                 </tr>
-            </tbody>
-        </datatable>
-        <pagination :pagination="pagination"
-                    @prev="getContacts(pagination.prevPageUrl)"
-                    @next="getContacts(pagination.nextPageUrl)">
-        </pagination>
+                </tbody>
+            </datatable>
+            <pagination :pagination="pagination"
+                        @prev="getContacts(pagination.prevPageUrl)"
+                        @next="getContacts(pagination.nextPageUrl)">
+            </pagination>
 
-        <!-- Edit Contact Modal -->
-        <div class="modal fade" id="modal-edit-contact" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">
-                            Edit Contact
-                        </h4>
-                    </div>
+            <!-- Edit Contact Modal -->
+            <div class="modal fade" id="modal-edit-contact" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">
+                                Edit Contact
+                            </h4>
+                        </div>
 
-                    <div class="modal-body table-responsive">
-                        <table class="table table-bordered table-hover table-condensed">
-                            <tbody>
-                            <tr v-for="(value, key) in editForm.contact_form">
-                                <td><strong>{{ key }}</strong></td>
-                                <td v-if=" key === 'photo' &&  value !== null || key === 'photo_soc' &&  value !== null">
-                                    <img :src="'file_download/photo_users/' + value" class="img-responsive img-thumbnail">
-                                </td>
-                                <td v-else-if=" key === 'soc_url' &&  value !== null">
-                                    <a :href="value" target="_blank">
-                                        {{ value }}
-                                    </a>
-                                </td>
-                                <td v-else>{{ value }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        <div class="modal-body table-responsive">
+                            <table class="table table-bordered table-hover table-condensed">
+                                <tbody>
+                                <tr v-for="(value, key) in editForm.contact_form">
+                                    <td><strong>{{ key }}</strong></td>
+                                    <td v-if=" key === 'photo' &&  value !== null || key === 'photo_soc' &&  value !== null">
+                                        <img :src="'file_download/photo_users/' + value" class="img-responsive img-thumbnail">
+                                    </td>
+                                    <td v-else-if=" key === 'soc_url' &&  value !== null">
+                                        <a :href="value" target="_blank">
+                                            {{ value }}
+                                        </a>
+                                    </td>
+                                    <td v-else>{{ value }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <!-- Modal Actions -->
-                    <div class="modal-footer">
-                        <a class="action-link text-danger" @click="destroy(editForm.contact_form)">
-                            Delete
-                        </a>
+                        <!-- Modal Actions -->
+                        <div class="modal-footer">
+                            <a class="action-link text-danger" @click="destroy(editForm.contact_form)">
+                                Delete
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
 import Datatable from './Datatable.vue';
 import Pagination from './Pagination.vue'
+import Switches from 'vue-switches';
+
 export default {
-    components: { datatable: Datatable, pagination: Pagination },
+    components: { datatable: Datatable, pagination: Pagination, Switches },
     created() {
         this.getContacts();
         Echo.channel('user-room.1')
             .listen('onAddContactEvent', (e) => {
-                e.contact.new = true;
-                this.contacts.unshift(e.contact);
+                if (this.online){
+                    e.contact.new = true;
+                    this.contacts.unshift(e.contact);
+                }
             });
     },
 
     data() {
-        let sortOrders = {};
-
-        let columns = [
-            {width: '', label: 'ID', name: 'id' },
-            {width: '', label: 'Firstname', name: 'firstname' },
-            {width: '', label: 'Phone', name: 'phone'},
-            {width: '', label: 'Email', name: 'email'},
-            {width: '', label: 'City', name: 'city'}
-        ];
+        let sortOrders = {},
+            columns = [
+                {width: '5%', label: 'ID', name: 'id' },
+                {width: '23.75%', label: 'Firstname', name: 'firstname' },
+                {width: '23.75%', label: 'Phone', name: 'phone'},
+                {width: '33.75%', label: 'Email', name: 'email'},
+                {width: '13.75%', label: 'City', name: 'city'}
+            ];
 
         columns.forEach((column) => {
            sortOrders[column.name] = -1;
@@ -157,7 +190,9 @@ export default {
             editForm: {
                 errors: [],
                 contact_form: []
-            }
+            },
+            online: true,
+            views: [10, 20, 30, 50, 100]
         }
     },
     methods: {
@@ -195,19 +230,14 @@ export default {
         getIndex(array, key, value) {
             return array.findIndex(i => i[key] == value)
         },
-
-        /**
-         * Edit the given Contact.
-         */
+        onlineChange(value){
+            this.online = value;
+            this.getContacts();
+        },
         edit(contact) {
             this.editForm.contact_form = contact;
-
             $('#modal-edit-contact').modal('show');
         },
-
-        /**
-         * Destroy the given client.
-         */
         destroy(contact) {
             axios.get('/api/contacts/delete/' + contact.id)
                 .then(response => {
