@@ -83,9 +83,4 @@ class PostController extends ApiController
         return ['data' => $Contacts, 'draw' => $request->input('draw')];
     }
 
-
-    /*--------------------------
-     *  Вспомогательные методы
-     * -------------------------*/
-
 }

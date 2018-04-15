@@ -188,12 +188,12 @@ export default {
         sortBy(key) {
             this.sortKey = key;
             this.sortOrders[key] = this.sortOrders[key] * -1;
-            this.tableData.column = this.getIndex(this.columns, 'id', key);
+            this.tableData.column = this.getIndex(this.columns, 'name', key);
             this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
             this.getContacts();
         },
         getIndex(array, key, value) {
-            return array.findIndex(i => i[key] === value)
+            return array.findIndex(i => i[key] == value)
         },
 
         /**
