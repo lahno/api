@@ -135,7 +135,7 @@ class PostController extends Controller
                 $path = public_path('file_download/photo_users/'.$file_name);
                 // сжимаем и сохраняем файл
                 $img = Image::make($item)->resize(100, 100);
-                $img->save($path, 60);
+                $img->save($path, 100); // качество 100/100, по умолчанию 90
                 $data[$key] = $file_name;
                 continue;
             }
