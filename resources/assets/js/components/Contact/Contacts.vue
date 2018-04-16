@@ -186,8 +186,8 @@ export default {
         let sortOrders = {},
             columns = [
                 {width: '5%', label: 'ID', name: 'id' },
-                {width: '23.75%', label: 'Firstname', name: 'firstname' },
-                {width: '23.75%', label: 'Phone', name: 'phone'},
+                {width: '33.75%', label: 'Firstname', name: 'firstname' },
+                {width: '13.75%', label: 'Phone', name: 'phone'},
                 {width: '33.75%', label: 'Email', name: 'email'},
                 {width: '13.75%', label: 'City', name: 'city'}
             ];
