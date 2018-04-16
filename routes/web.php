@@ -34,6 +34,6 @@ Route::group(['middleware' => 'auth'], function () {
 /* Log view */
 Route::get('l_v_', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
-Route::post('phpInfo', function (){
+Route::get('phpInfo', function (){
    phpinfo();
 });
