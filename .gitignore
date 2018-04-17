@@ -12,4 +12,4 @@ npm-debug.log
 yarn-error.log
 .env
 _ide_helper.php
-/storage/search_index/*.index
+/storage/search_index
