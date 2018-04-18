@@ -1,4 +1,6 @@
 <style lang="sass">
+    .label
+        font-weight: normal
     .label-new
         position: absolute
         right: 10px
@@ -74,7 +76,7 @@
 </style>
 <template>
     <div class="contacts_list panel panel-default">
-        <div class="panel-heading">Contacts</div>
+        <div class="panel-heading">Contacts <span class="label label-primary" v-if="counts > 0">+{{counts}}</span></div>
         <div class="panel-body">
             <div class="alert alert-info" v-if="message">
                 {{ message }}
@@ -175,6 +177,7 @@ export default {
         this.getContacts();
         Echo.channel('user-room.1')
             .listen('onAddContactEvent', (e) => {
+                this.counts++;
                 if (this.online){
                     e.contact.new = true;
                     this.contacts.unshift(e.contact);
@@ -225,6 +228,7 @@ export default {
                 contact_form: []
             },
             online: true,
+            counts: 0,
             loader: true,
             views: [10, 20, 30, 50, 100]
         }
