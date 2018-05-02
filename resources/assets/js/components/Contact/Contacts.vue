@@ -108,7 +108,7 @@
                             <td>{{contact.firstname}}</td>
                             <td>{{contact.phone}}</td>
                             <td>{{contact.email}}<span class="label label-primary label-new" v-if="contact.new">New</span></td>
-                            <td>{{contact.city}}</td>
+                            <td>{{contact.contact_site}}</td>
                             <td>
                                 <button type="button" class="btn btn-link btn-xs" @click="edit(contact)"><span class="glyphicon glyphicon-search"></span></button>
                             </td>
@@ -191,8 +191,8 @@ export default {
                 {width: '5%', label: 'ID', name: 'id' },
                 {width: '33.75%', label: 'Firstname', name: 'firstname' },
                 {width: '13.75%', label: 'Phone', name: 'phone'},
-                {width: '33.75%', label: 'Email', name: 'email'},
-                {width: '13.75%', label: 'City', name: 'city'}
+                {width: '23.75%', label: 'Email', name: 'email'},
+                {width: '23.75%', label: 'Site', name: 'contact_site'}
             ];
 
         columns.forEach((column) => {

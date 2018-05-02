@@ -60,7 +60,7 @@ class PostController extends ApiController
 
     public function get_contacts(Request $request){
 
-        $columns = ['id', 'firstname', 'phone', 'email', 'city'];
+        $columns = ['id', 'firstname', 'phone', 'email', 'contact_site'];
 
         $length = $request->input('length');
         $column = $request->input('column'); //Index
