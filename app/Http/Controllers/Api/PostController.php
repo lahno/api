@@ -67,21 +67,22 @@ class PostController extends ApiController
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
 
-        if ($searchValue) {
-            $query = Contact::search($searchValue)->orderBy($columns[$column], $dir);
-        }else{
-            $query = Contact::select('*')->orderBy($columns[$column], $dir);
-        }
+//        if ($searchValue) {
+//            $query = Contact::search($searchValue)->orderBy($columns[$column], $dir);
+//        }else{
+//            $query = Contact::select('*')->orderBy($columns[$column], $dir);
+//        }
 
+        $query = Contact::select('*')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
-//            $query->where(function($query) use ($searchValue) {
-//                $query->where('firstname', 'like', '%' . $searchValue . '%')
-//                    ->orWhere('firstname', 'like', '%' . $this->getStringLat($searchValue) . '%')
-//                    ->orWhere('phone', 'like', '%' . $searchValue . '%')
-//                    ->orWhere('email', 'like', '%' . $searchValue . '%')
-//                    ->orWhere('city', 'like', '%' . $searchValue . '%');
-//            });
+            $query->where(function($query) use ($searchValue) {
+                $query->where('firstname', 'like', '%' . $searchValue . '%')
+                    ->orWhere('firstname', 'like', '%' . $this->getStringLat($searchValue) . '%')
+                    ->orWhere('phone', 'like', '%' . $searchValue . '%')
+                    ->orWhere('email', 'like', '%' . $searchValue . '%')
+                    ->orWhere('contact_site', 'like', '%' . $searchValue . '%');
+            });
         }
 
         $Contacts = $query->paginate($length);
